@@ -1,14 +1,18 @@
 require('dotenv').config()
 const connectDB = require('./src/config/db')
 const express = require('express')
+const productRoutes = require('./src/routes/productRoutes'); 
+const authRoutes = require('./src/routes/AuthRoutes')
 
 const app = express()
 
 connectDB()
 
-app.get('/',(req,res)=>{
-    res.send('Amazon Clone API is Running!');
-})
+app.use(express.json());
+
+
+app.use('/api/products', productRoutes);
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
