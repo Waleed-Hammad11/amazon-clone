@@ -5,7 +5,7 @@ exports.protect = async (req, res, next) => {
 let token;
 
 if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    
+
     token = req.headers.authorization.split(' ')[1];
 }
 
@@ -23,3 +23,14 @@ try {
     return res.status(401).json({ success: false, error: ' invalid token ' });
 }
 };
+
+exports.restrictTo=(...roles)=>{
+    return (req,res,next)=>{
+        if(!roles.includes(req.user.role)){
+            return res.status(403).json({
+                success: false, error: 'admin only can do this'
+            })
+        }
+        next()
+    }
+}
