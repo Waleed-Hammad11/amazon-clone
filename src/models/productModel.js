@@ -6,6 +6,11 @@ const productSchema = new mongoose.Schema({
         trim:true,
         maxLenght:[100,"the name is too long"]
     },
+    image: {
+    type: String,
+    required: true,
+    default: '/uploads/default-product.webp' 
+    },
     price:{
         type:Number,
         required: [true, "Enter a price"],

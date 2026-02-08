@@ -4,7 +4,16 @@ const APIFeatures = require("../utils/apiFeatures");
 
 exports.createProduct = async (req, res) => {
 try {
-    const product = await Product.create(req.body);
+    let imagePath = ''
+    if(req.file){
+        imagePath = `/uploads/${req.file.filename}`
+    }
+    const productData = {
+        ...req.body,
+        imagePath
+    }
+
+    const product = await Product.create(productData);
 
     res.status(201).json({
         success: true,
