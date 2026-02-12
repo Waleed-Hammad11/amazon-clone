@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { Auth } from '../../core/services/auth';
 
 @Component({
   selector: 'app-login',
@@ -10,10 +11,38 @@ import { RouterLink } from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login {
+  private router = inject(Router)
+  private authService = inject(Auth)
+
+
+
   email:string =''
   password:string=''
-
+  isLoading:boolean=false
+  errorMessage: string = ''
   onSubmit(){
-    console.log(`log attempt: `,{email:this.email , password:this.password})
+    if (!this.email || !this.password) return
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    const credentials = {
+      email: this.email,
+      password: this.password
+    };
+
+    this.authService.login(credentials).subscribe({
+      next: (response) => {
+        console.log('Login Success:', response);
+        this.isLoading = false;
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Login Failed:', err);
+        this.isLoading = false;
+        this.errorMessage = err.error.error || 'Something went wrong';
+      }
+    });
+
   }
 }

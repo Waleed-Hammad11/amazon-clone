@@ -10,20 +10,35 @@
     <form (ngSubmit)="onSubmit()">
 
       <div class="mb-3">
-        <label class="form-label fw-bold small">Email or mobile phone number</label>
-        <input type="email" class="form-control amazon-input" [(ngModel)]="email" name="email" required>
+        <label class="form-label fw-bold small">Email or mobile phone
+          number</label>
+        <input type="email" class="form-control amazon-input"
+          [(ngModel)]="email" name="email" required>
       </div>
 
       <div class="mb-3">
         <div class="d-flex justify-content-between">
           <label class="form-label fw-bold small">Password</label>
-          <a href="#" class="text-decoration-none small link-primary">Forgot password?</a>
+          <a href="#" class="text-decoration-none small link-primary">Forgot
+            password?</a>
         </div>
-        <input type="password" class="form-control amazon-input" [(ngModel)]="password" name="password" required>
+        <input type="password" class="form-control amazon-input"
+          [(ngModel)]="password" name="password" required>
       </div>
+      @if (errorMessage) {
+      <div class="alert alert-danger p-2 small text-center mb-3">
+        <i class="fas fa-exclamation-triangle me-1"></i> {{ errorMessage }}
+      </div>
+      }
 
-      <button type="submit" class="btn btn-warning w-100 amazon-btn shadow-sm">
-        Sign in
+      <button type="submit" class="btn btn-warning w-100 amazon-btn shadow-sm"
+        [disabled]="isLoading">
+        @if (!isLoading) {
+        <span>Sign in</span>
+        }@else {
+        <span><i class="fas fa-spinner fa-spin"></i> Loading...</span>
+        }
+
       </button>
 
     </form>
@@ -44,7 +59,8 @@
     <span class="bg-light px-2 text-muted small">New to Amazon?</span>
   </div>
 
-  <a routerLink="/register" class="btn btn-light w-100 border shadow-sm create-account-btn">
+  <a routerLink="/register"
+    class="btn btn-light w-100 border shadow-sm create-account-btn">
     Create your Amazon account
   </a>
 
