@@ -1,0 +1,60 @@
+<div class="login-container">
+
+  <div class="text-center mb-3">
+    <i class="fab fa-amazon text-dark fa-3x"></i>
+  </div>
+
+  <div class="card login-card p-4">
+    <h3 class="mb-3 fw-normal">Sign in</h3>
+
+    <form (ngSubmit)="onSubmit()">
+
+      <div class="mb-3">
+        <label class="form-label fw-bold small">Email or mobile phone number</label>
+        <input type="email" class="form-control amazon-input" [(ngModel)]="email" name="email" required>
+      </div>
+
+      <div class="mb-3">
+        <div class="d-flex justify-content-between">
+          <label class="form-label fw-bold small">Password</label>
+          <a href="#" class="text-decoration-none small link-primary">Forgot password?</a>
+        </div>
+        <input type="password" class="form-control amazon-input" [(ngModel)]="password" name="password" required>
+      </div>
+
+      <button type="submit" class="btn btn-warning w-100 amazon-btn shadow-sm">
+        Sign in
+      </button>
+
+    </form>
+
+    <div class="mt-4">
+      <small class="text-muted" style="font-size: 12px;">
+        By continuing, you agree to Amazon's
+        <a href="#">Conditions of Use</a> and <a href="#">Privacy Notice</a>.
+      </small>
+    </div>
+
+    <div class="mt-3">
+      <a href="#" class="small text-decoration-none">Need help?</a>
+    </div>
+  </div>
+
+  <div class="divider-text mt-4 mb-3">
+    <span class="bg-light px-2 text-muted small">New to Amazon?</span>
+  </div>
+
+  <a routerLink="/register" class="btn btn-light w-100 border shadow-sm create-account-btn">
+    Create your Amazon account
+  </a>
+
+  <div class="text-center mt-4 border-top pt-3 footer-links">
+    <small>
+      <a href="#" class="mx-2">Conditions of Use</a>
+      <a href="#" class="mx-2">Privacy Notice</a>
+      <a href="#" class="mx-2">Help</a>
+    </small>
+    <div class="mt-1 text-muted small">&copy; 1996-2024, Amazon.com, Inc.</div>
+  </div>
+
+</div>

@@ -1,0 +1,44 @@
+.back-to-top {
+  background-color: #37475a;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.back-to-top:hover {
+  background-color: #485769;
+}
+
+.footer-middle {
+  background-color: #232f3e;
+  font-size: 14px;
+}
+
+.footer-middle h6 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.list-unstyled li {
+  margin-bottom: 8px;
+}
+
+.list-unstyled a {
+  text-decoration: none;
+  color: #ddd;
+  font-size: 13px;
+}
+
+.list-unstyled a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  background-color: #131921;
+  color: #ddd;
+  font-size: 12px;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+}

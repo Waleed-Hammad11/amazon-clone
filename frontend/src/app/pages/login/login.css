@@ -1,0 +1,77 @@
+/* تنسيق الصفحة بالكامل */
+.login-container {
+  max-width: 350px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* البوكس الأبيض */
+.login-card {
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* حقول الإدخال */
+.amazon-input {
+  border: 1px solid #a6a6a6;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.5), 0 1px 0 rgba(0,0,0,.07) inset;
+  height: 31px;
+  font-size: 13px;
+}
+
+.amazon-input:focus {
+  border-color: #e77600;
+  box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5); /* الوهج البرتقالي بتاع أمازون */
+}
+
+/* زرار الدخول الأصفر */
+.amazon-btn {
+  background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+  border-color: #a88734 #9c7e31 #846a29;
+  color: #111;
+  font-size: 13px;
+}
+
+.amazon-btn:hover {
+  background: linear-gradient(to bottom, #f5d78e, #eeb933);
+}
+
+/* الفاصل (New to Amazon) */
+.divider-text {
+  position: relative;
+  text-align: center;
+  border-top: 1px solid #e7e7e7;
+  height: 0;
+  margin-top: 20px;
+}
+
+.divider-text span {
+  background-color: #fff; /* خلفية بيضاء عشان تغطي الخط */
+  position: relative;
+  top: -10px;
+}
+
+/* زرار إنشاء حساب (الرمادي) */
+.create-account-btn {
+  background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
+  border-color: #adb1b8 #a2a6ac #8d9096;
+  font-size: 13px;
+}
+
+.create-account-btn:hover {
+  background: linear-gradient(to bottom, #e7eaf0, #d9dce1);
+}
+
+/* الفوتر السفلي */
+.footer-links a {
+  text-decoration: none;
+  color: #0066c0;
+  font-size: 11px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+  color: #c45500;
+}
