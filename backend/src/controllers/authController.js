@@ -1,8 +1,11 @@
 const User = require('../models/userModel')
 const sendEmail = require('../utils/sendEmail')
 const crypto = require(`crypto`)
-exports.register = async (req, res, next) => {
-try {
+const APIFeatures = require("../utils/apiFeatures");
+const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync');
+
+exports.register =catchAsync(async (req, res, next) => {
     const { name, email, password, role } = req.body;
 
     const user = await User.create({
@@ -35,53 +38,37 @@ try {
         user.verificationTokenExpire = undefined;
         await user.save({ validateBeforeSave: false });
 
-        return res.status(500).json({ success: false, error: 'email failed to be sent' });
+        return next(new AppError('Email could not be sent. Please try again later.', 500));
     }
+}) 
 
-    } catch (error) {
-    res.status(400).json({ success: false, error: error.message });
-    }
-};
+exports.login =catchAsync(async function (req,res,next){
 
-exports.login = async function (req,res,next){
-    try {
         const {password,email}=req.body
         if(!password || !email){
-            return res.status(400).json({success:false,error:"please enter data fields"})
+            return next(new AppError('Please provide email and password', 400));
         }
 
         const user = await User.findOne({email}).select('+password')
-        if(!user){
-            return res.status(400).json({success:false,error:"user not found"})
+        const isMatch = await user.matchPassword(password)
+        if(!user || isMatch ){
+            return next(new AppError('Incorrect email or password', 401));
         }
 
         if (!user.isVerified) {
-            return res.status(401).json({ 
-                success: false, 
-                error: "Please verify your email first!" 
-            });
+            return next(new AppError('Please verify your email first!', 401))
         }
-        const isMatch = await user.matchPassword(password)
-
-        if (!isMatch){
-            return res.status(400).json({success:false,error:"Enter correct Password"})
-        }
+        
 
         const token = user.getSignedJwtToken()
 
-        res.status(200).json({
-            success:true,
-            token
-        })
+        res.status(200).json({success:true , token})
 
-    } catch (error) {
-        res.status(400).json({ success: false, error: error.message })
-    }
-}
+}) 
 
 
-exports.verifyEmail = async (req, res, next) => {
-    try {
+exports.verifyEmail =catchAsync(async (req, res, next) => {
+
     const verificationToken = crypto
         .createHash('sha256')
         .update(req.params.token)
@@ -93,7 +80,7 @@ exports.verifyEmail = async (req, res, next) => {
     });
 
     if (!user) {
-        return res.status(400).json({ success: false, error: 'the url is not valid' });
+        return next(new AppError('Token is invalid or has expired', 400));
     }
 
     user.isVerified = true;
@@ -109,8 +96,5 @@ exports.verifyEmail = async (req, res, next) => {
         token
     });
 
-    } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-    }
-};
+}) 
 

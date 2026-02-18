@@ -1,9 +1,10 @@
 const Product = require("../models/productModel");
 const APIFeatures = require("../utils/apiFeatures");
+const AppError = require('../utils/appError')
+const catchAsync = require('../utils/catchAsync')
 
+exports.createProduct = catchAsync(async (req, res) => {
 
-exports.createProduct = async (req, res) => {
-try {
     let imagePath = ''
     if(req.file){
         imagePath = `/uploads/${req.file.filename}`
@@ -19,16 +20,10 @@ try {
         success: true,
         data: product,
     });
-} catch (error) {
-    res.status(400).json({
-        success: false,
-        error: error.message,
-    });
-    }
-};
 
-exports.getAllProducts = async (req,res)=>{
-    try {
+})
+
+exports.getAllProducts =  catchAsync(async (req,res)=>{
         
         const features = new APIFeatures(Product.find(),req.query).filter().sort().paginate()
         const products = await features.query
@@ -37,12 +32,4 @@ exports.getAllProducts = async (req,res)=>{
             success:true,
             count : products.length
         })
-    } catch (error) {
-        res.status(500).json({
-            error: "Server Error",
-            success:false
-        })
-    }
-    
-    
-}
+}) 

@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
+const { promisify } = require('util');
 const User = require('../models/userModel');
-
-exports.protect = async (req, res, next) => {
+const AppError = require('../utils/appError')
+const catchAsync = require('../utils/catchAsync')
+exports.protect =catchAsync(async (req, res, next) => {
 let token;
 
 if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -10,26 +12,28 @@ if (req.headers.authorization && req.headers.authorization.startsWith('Bearer'))
 }
 
 if (!token) {
-    return res.status(401).json({ success: false, error: 'No Token' });
+    return next(new AppError('You are not logged in! Please log in to get access.', 401));
 }
 
-try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = await User.findById(decoded.id);
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-    next(); 
-} catch (error) {
-    return res.status(401).json({ success: false, error: ' invalid token ' });
-}
-};
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) {
+        return next(new AppError('The user belonging to this token no longer exists.', 401));
+    }
+
+    req.user = currentUser;
+    next();
+
+    return next(new AppError('invalid Token', 401));
+
+}) 
 
 exports.restrictTo=(...roles)=>{
     return (req,res,next)=>{
         if(!roles.includes(req.user.role)){
-            return res.status(403).json({
-                success: false, error: 'admin only can do this'
-            })
+            return next(new AppError('You do not have permission to perform this action', 403))
         }
         next()
     }

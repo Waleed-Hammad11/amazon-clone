@@ -1,14 +1,12 @@
 const Order = require("../models/orderModel");
+const AppError = require('../utils/appError')
+const catchAsync = require('../utils/catchAsync')
+exports.createOrder = catchAsync(async function (req, res) {
 
-exports.createOrder = async function (req, res) {
-try {
     const { orderItems, shippingAddress, paymentMethod, totalPrice } = req.body;
 
-    if (orderItems && orderItems.lenght === 0) {
-        res.status(400).json({
-        success: false,
-        error: "there is no order items",
-    });
+    if (orderItems && orderItems.length === 0) {
+        return next(new AppError('There is no order items',400))
     }
 
     const order =await Order.create({
@@ -25,24 +23,16 @@ try {
         data: order,
         
     });
-} catch (error) {
-    res.status(400).json({
-        success: false,
-        error:error.message,
-    })
-}
-}
-exports.getMyOrder= async function(req,res) {
-    try {
+
+})
+exports.getMyOrder= catchAsync(async function(req,res) {
         const orders =await Order.find({user:req.user._id}) 
         res.status(201).json({
             success:true,
             data:orders,
             count: orders.length
         })
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message })
-    }
-}
+})
+
 
 

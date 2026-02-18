@@ -6,6 +6,7 @@ const cors = require('cors')
 const productRoutes = require('./src/routes/productRoutes'); 
 const authRoutes = require('./src/routes/AuthRoutes')
 const orderRoutes =require('./src/routes/orderRoutes')
+const globalErrorHandler = require('./src/controllers/errorController');
 const app = express()
 
 connectDB()
@@ -21,7 +22,6 @@ app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/uploads',express.static(path.join(__dirname,'/uploads')))
-const globalErrorHandler = require('./src/controllers/errorController');
 app.use(globalErrorHandler);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
